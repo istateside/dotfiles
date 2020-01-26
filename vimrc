@@ -1,3 +1,10 @@
+" Auto install vim-plug if it doesnt exist yet
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
   Plug 'flazz/vim-colorschemes' " color schemes
   Plug 'scrooloose/nerdtree' " file explorer
@@ -24,7 +31,7 @@ call plug#begin('~/.vim/plugged')
   endif
 call plug#end()
 
-source ~/.dotfiles/simple-vimrc
+source ./simple-vimrc
 
 " Plugin settings
 colorscheme gruvbox " colorscheme, installed from the vim-colorschemes plugin
@@ -95,7 +102,7 @@ let g:lightline = {
 if has('nvim')
   let g:gitgutter_highlight_linenrs=1
 
-  source ~/.dotfiles/denite-settings.vim
+  source ./denite-settings.vim
 else
   nnoremap <leader>f :Files<CR>
 endif
