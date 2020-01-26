@@ -31,7 +31,7 @@ call plug#begin('~/.vim/plugged')
   endif
 call plug#end()
 
-source ./simple-vimrc
+source ~/dotfiles/simple-vimrc
 
 " Plugin settings
 colorscheme gruvbox " colorscheme, installed from the vim-colorschemes plugin
@@ -62,7 +62,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+"autocmd CursorHold * silent call CocActionAsync('highlight')
 
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
@@ -102,7 +102,7 @@ let g:lightline = {
 if has('nvim')
   let g:gitgutter_highlight_linenrs=1
 
-  source ./denite-settings.vim
+  source ~/dotfiles/denite-settings.vim
 else
   nnoremap <leader>f :Files<CR>
 endif

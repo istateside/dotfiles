@@ -5,7 +5,7 @@ alias vimpack="cd ~/.vim/pack/default/start"
 alias vimplug="nvim ~/.local/share/nvim/site/autoload/plug.vim"
 alias ag="ag --path-to-ignore ~/.agignore"
 
-source ./git-completion.bash
+source ~/dotfiles/git-completion.bash
 
 __complete_goto() {
   if [ "${#COMP_WORDS[@]}" != "2" ]; then
