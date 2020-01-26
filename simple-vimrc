@@ -6,7 +6,7 @@ syntax on " enable syntax highlighting
 " Default <leader> key is backslash, which is uncomfortable to reach.
 let mapleader = ","
 
-set noeol " do not insert automatic newline at end of file when saving files
+set nofixendofline
 
 set relativenumber " display line numbers as relative to current line in left-hand column
 set number " display actual line number instead of "line 0" for the current line
@@ -16,6 +16,13 @@ set hidden " allow leaving buffers without saving them
 set termguicolors " allow vim to use full color palette from your terminal
 set laststatus=2 " always show status bar at bottom of screen
 set scrolloff=15 " always show 15 lines above + below cursor
+
+set updatetime=100
+
+set foldmethod=syntax
+set foldlevel=99
+
+set mouse=a " allow scrolling with mousewheel
 
 set undofile " save undo history, instead of losing it every time vim closes
 
@@ -44,6 +51,7 @@ set formatoptions-=t " do not automatically wrap text while typing long lines
 set colorcolumn=+1 " highlight column set by textwidth to mark long lines
 set textwidth=100 " width for colorcolumn. Would auto-break lines if formatoptions included "t"
 
+set showtabline=2 "always show tabline
 " keybindings to navigate open buffers without needing to manually recall them
 " <Tab> to switch to next buffer, <Shift-Tab> to switch to previous buffer
 map <S-Tab> :bp<CR> 
@@ -51,9 +59,14 @@ map <Tab> :bn<CR>
 
 " keybindings to move lines of text around.
 " Control+J to move down, Control+K to move up.
-nnoremap <C-j> :m .+1<CR>==
-vnoremap <C-j> :m '>+1<CR>gv=gv
-inoremap <C-j> <Esc>:m .+1<CR>==gi
-nnoremap <C-k> :m .-2<CR>==
-inoremap <C-k> <Esc>:m .-2<CR>==gi
-vnoremap <C-k> :m '<-2<CR>gv=gv
+"nnoremap <C-j> :m .+1<CR>==
+"vnoremap <C-j> :m '>+1<CR>gv=gv
+"inoremap <C-j> <Esc>:m .+1<CR>==gi
+"nnoremap <C-k> :m .-2<CR>==
+"inoremap <C-k> <Esc>:m .-2<CR>==gi
+"vnoremap <C-k> :m '<-2<CR>gv=gv
+
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>

@@ -1,7 +1,10 @@
 " Denite setup Pulled from https://github.com/ctaylo21/jarvis/blob/master/config/nvim/init.vim#L58
 call denite#custom#var('file/rec', 'command', ['rg', '--hidden', '--files', '--glob', '!.git'])
-call denite#custom#var('grep', 'command', ['rg'])
+call denite#custom#source('file/rec', 'sorters', ['sorter/sublime'])
+call denite#custom#alias('source', 'file/rec/build', 'file/rec')
+call denite#custom#var('file/rec/build', 'command', ['rg', '--hidden', '--files', '--no-ignore-vcs', '--glob', '!.git', ':directory', 'build/'])
 
+call denite#custom#var('grep', 'command', ['rg'])
 " Recommended defaults for ripgrep via Denite docs
 call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])"
 call denite#custom#var('grep', 'recursive_opts', [])
@@ -21,10 +24,12 @@ endfunction
 " === Denite shorcuts === "
 "   ;         - Browser currently open buffers
 "   <leader>f     - Fuzzy find list of files in current directory
+"   <leader>b     - Fuzzy find list of files in current directory, ignoring .gitignore file
 "   <leader>g     - Search current directory for occurences of word under cursor
 "   <leader>a     - Search current directory for occurences of given term and close window if no results
 nmap ; :Denite buffer<CR>
 nmap <leader>f :DeniteProjectDir file/rec<CR>
+nmap <leader>b :DeniteProjectDir file/rec/build<CR>
 nnoremap <leader>g :<C-u>DeniteCursorWord grep:.<CR>
 nnoremap <leader>a :<C-u>Denite grep:. -no-empty<CR>
 
@@ -71,7 +76,6 @@ function! s:denite_my_settings() abort
 endfunction
 
 let s:denite_options = {'default' : {
-\ 'split': 'floating',
 \ 'start_filter': 1,
 \ 'auto_resize': 1,
 \ 'source_names': 'short',
@@ -87,4 +91,3 @@ let s:denite_options = {'default' : {
 \ }}
 
 call s:profile(s:denite_options)
-
