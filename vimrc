@@ -110,24 +110,35 @@ endif
 " Open closest package json - useful in a JS monorepo
 map <leader>p :call OpenClosestPackageJson()<CR>
 function! OpenClosestPackageJson()
-ruby <<EOF
-  directory_parts = File.dirname($curbuf.name).split("/")
+  let l:dir_parts = split(expand('%:p:h'))
 
-  while (directory_parts.length) do
-    filename = [*directory_parts, "package.json"].join("/")
-    if File.exist? filename
-      Vim::command("edit #{filename}")
-      break
+  while ! empty(l:dir_parts)
+    let l:filename = join(l:dir_parts, '/') . "/package.json"
+
+    if filereadable(l:filename)
+      execute 'pedit' l:filename
+      :wincmd P
+      return 1
     end
 
-    directory_parts.pop()
-  end
-EOF
+    let l:dir_parts = dir_parts[0:-2]
+  endwhile
+
+  return 0
 endfunction
 
 " vim-bufkill bindings
 let g:BufKillCreateMappings = 0
-nnoremap <leader>q :BD<CR>
+
+let g:previewheight=20
+nnoremap <leader>q :call ClosePreviewAndBuffer()<CR>
+function! ClosePreviewAndBuffer()
+  if &previewwindow
+    :bd!
+  else
+    :BD!
+  end
+endfunction
 
 " scratch.vim settings
 let g:scratch_persistence_file='~/.vim-scratch-file'
