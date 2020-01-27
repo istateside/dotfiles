@@ -110,21 +110,16 @@ endif
 " Open closest package json - useful in a JS monorepo
 map <leader>p :call OpenClosestPackageJson()<CR>
 function! OpenClosestPackageJson()
-  let dir_parts = split(expand('%:p:h'), '/')
+  let stop_dir = (finddir('.git', '.;') || '.') . ';'
+  let package_file = findfile('package.json', stop_dir)
 
-  while ! empty(dir_parts)
-    let filename = "/" . join(dir_parts, '/') . "/package.json"
+  if len(package_file)
+    execute 'pedit' package_file
+    :wincmd P
+    return
+  end
 
-    if filereadable(filename)
-      execute 'pedit' filename
-      :wincmd P
-      return 1
-    end
-
-    let dir_parts = dir_parts[0:-2]
-  endwhile
-
-  return 0
+  echo "'package.json' file could not be found"
 endfunction
 
 " vim-bufkill bindings
