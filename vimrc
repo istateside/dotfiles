@@ -110,18 +110,18 @@ endif
 " Open closest package json - useful in a JS monorepo
 map <leader>p :call OpenClosestPackageJson()<CR>
 function! OpenClosestPackageJson()
-  let l:dir_parts = split(expand('%:p:h'))
+  let dir_parts = split(expand('%:p:h'), '/')
 
-  while ! empty(l:dir_parts)
-    let l:filename = join(l:dir_parts, '/') . "/package.json"
+  while ! empty(dir_parts)
+    let filename = "/" . join(dir_parts, '/') . "/package.json"
 
-    if filereadable(l:filename)
-      execute 'pedit' l:filename
+    if filereadable(filename)
+      execute 'pedit' filename
       :wincmd P
       return 1
     end
 
-    let l:dir_parts = dir_parts[0:-2]
+    let dir_parts = dir_parts[0:-2]
   endwhile
 
   return 0
@@ -139,6 +139,9 @@ function! ClosePreviewAndBuffer()
     :BD!
   end
 endfunction
+
+" easy vim reloading`
+nnoremap <leader>VR :source ~/.vimrc<CR>:echom "~/.vimrc reloaded!"<CR>
 
 " scratch.vim settings
 let g:scratch_persistence_file='~/.vim-scratch-file'
