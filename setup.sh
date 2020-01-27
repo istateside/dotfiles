@@ -3,17 +3,63 @@
 fullpath=$(realpath $0)
 DIR=$(dirname $fullpath)
 
-touch ~/.bashrc
-echo "Appending the following to ~/.bashrc :"
-echo -e "source $DIR/bashrc"
-echo -e "source $DIR/bashrc" >> ~/.bashrc
+### BASH SETUP
+bash_source="source $DIR/bashrc"
+bash_original="$HOME/.bashrc"
 
-touch ~/.vimrc
-echo "Appending the following to ~/.vimrc :"
-echo -e "source $DIR/vimrc"
-echo -e "source $DIR/vimrc" >> ~/.vimrc
+if [ ! -f "$bash_original" ]; then
+  touch "$bash_original"
+  echo "Created $bash_original file"
+fi
 
-touch ~/.tmux.conf
-echo "Appending the following to ~/.tmux.conf :"
-echo -e "source $DIR/.tmux.conf"
-echo -e "source $DIR/.tmux.conf" >> ~/.tmux.conf
+if ! grep --quiet "$bash_source" $bash_original; then
+  echo "Appending the following to "$bash_original" :"
+  echo -e "$bash_source"
+  echo -e "\n$bash_source" >> $bash_original
+else
+  echo "Already found correct source line in $bash_original"
+fi
+
+### VIM SETUP
+vim_original="$HOME/.vimrc"
+vim_source="source $DIR/vimrc"
+
+if ! command -v vim >/dev/null; then
+  echo "WARNING: Could not find an installation for vim on this system."
+fi
+
+if [ ! -f "$vim_original" ]; then
+  touch $vim_original
+  echo "Created $vim_original file"
+fi
+
+if ! grep --quiet "$vim_source" $vim_original; then
+  echo "Appending the following to $vim_original :"
+  echo -e "$vim_source"
+  echo -e "\n$vim_source" >> $vim_original
+else
+  echo "Already found correct source line in $vim_original"
+fi
+
+### TMUX SETUP
+tmux_original="$HOME/.tmux.conf"
+tmux_source="source $DIR/.tmux.conf"
+
+if ! command -v tmux >/dev/null; then
+  echo "WARNING: Could not find an installation for tmux on this system."
+fi
+
+if [ ! -f "$tmux_original" ]; then
+  touch $tmux_original
+  echo "Created $tmux_original file"
+fi
+
+if ! grep --quiet "$tmux_source" $tmux_original; then
+  echo "Appending the following to $tmux_original :"
+  echo -e "$tmux_source"
+  echo -e "\n$tmux_source" >> $tmux_original
+else
+  echo "Already found correct source line in $tmux_original"
+fi
+
+echo "Completed setup."
