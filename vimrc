@@ -130,7 +130,7 @@ endfunction
 " vim-bufkill bindings
 let g:BufKillCreateMappings = 0
 
-let g:previewheight=20
+set previewheight=30
 nnoremap <leader>q :call ClosePreviewAndBuffer()<CR>
 function! ClosePreviewAndBuffer()
   if &previewwindow
