@@ -112,8 +112,7 @@ endif
 " Open closest package json - useful in a JS monorepo
 map <leader>p :call OpenClosestPackageJson()<CR>
 function! OpenClosestPackageJson()
-  let stop_dir = (finddir('.git', '.;') || '.') . ';'
-  let package_file = findfile('package.json', stop_dir)
+  let package_file = findfile('package.json', '.;.git;')
 
   if len(package_file)
     execute 'pedit' package_file
