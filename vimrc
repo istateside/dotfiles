@@ -20,6 +20,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'ap/vim-buftabline' " show open buffers in tabline
   Plug 'mtth/scratch.vim'
+  Plug 'tommcdo/vim-fubitive' " vim-fugitive support for bitbucket links
+  Plug 'tpope/vim-rhubarb' " vim-fugitive support for github links
 
   if has('nvim')
     " nvim specific plugins
