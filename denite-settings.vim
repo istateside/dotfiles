@@ -12,6 +12,8 @@ call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
 
+call denite#custom#option('_', 'max_dynamic_update_candidates', 50000)
+
 " Loop through denite options and enable them
 function! s:profile(opts) abort
   for l:fname in keys(a:opts)
