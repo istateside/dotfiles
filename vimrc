@@ -143,3 +143,6 @@ let g:scratch_no_mappings=1
 nnoremap <silent> <plug>(scratch-open) :call scratch#open(0)<cr>
 nmap gs <plug>(scratch-open)
 nmap gi <plug>(scratch-insert-reuse)
+
+" bitbucket support for SQS cloud domain
+let g:fugitive_bitbucket_domains = ['code.squarespace.net']
