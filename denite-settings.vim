@@ -93,3 +93,7 @@ let s:denite_options = {'default' : {
 \ }}
 
 call s:profile(s:denite_options)
+
+" fruzzy settings
+let g:fruzzy#usenative = 1
+call denite#custom#source('_', 'matchers', ['matcher/fruzzy'])

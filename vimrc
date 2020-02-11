@@ -26,6 +26,7 @@ call plug#begin('~/.vim/plugged')
   if has('nvim')
     " nvim specific plugins
     Plug 'Shougo/denite.nvim'
+    Plug 'raghur/fruzzy', {'do': { -> fruzzy#install()}}
   else
     " vim specific plugins
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
