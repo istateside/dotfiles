@@ -39,6 +39,7 @@ source ~/dotfiles/simple-vimrc
 colorscheme gruvbox " colorscheme, installed from the vim-colorschemes plugin
 
 " nerdcommenter mappings
+let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
 nnoremap <leader>c<space> :call NERDComment("n", "Toggle")<CR>
 vnoremap <leader>c<space> :call NERDComment("n", "Toggle")<CR>gv
