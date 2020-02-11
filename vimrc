@@ -146,3 +146,6 @@ nmap gi <plug>(scratch-insert-reuse)
 
 " bitbucket support for SQS cloud domain
 let g:fugitive_bitbucket_domains = ['code.squarespace.net']
+
+" stop unzooming the vim tmux pane when navigating past edge - for vim-tmux-navigator
+let g:tmux_navigator_disable_when_zoomed=1
