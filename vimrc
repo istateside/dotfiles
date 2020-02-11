@@ -130,14 +130,8 @@ endfunction
 let g:BufKillCreateMappings = 0
 
 set previewheight=30
-nnoremap <leader>q :call ClosePreviewAndBuffer()<CR>
-function! ClosePreviewAndBuffer()
-  if &previewwindow
-    :bd!
-  else
-    :BD!
-  end
-endfunction
+nnoremap <leader>q :bd!<CR>
+nnoremap <leader>Q :BD!<CR>
 
 " easy vim reloading`
 nnoremap <leader>VR :source ~/.vimrc<CR>:echom "~/.vimrc reloaded!"<CR>
