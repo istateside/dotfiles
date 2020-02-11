@@ -70,6 +70,8 @@ endfunction
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 autocmd BufEnter,BufRead,BufNewFile *.buildconfig :setlocal syntax=json
+autocmd BufEnter,BufRead,BufNewFile *.block :setlocal filetype=html
+autocmd BufEnter,BufRead,BufNewFile *.block :setlocal syntax=html
 autocmd BufEnter,BufRead,BufNewFile *.jsont :setlocal filetype=html
 autocmd BufEnter,BufRead,BufNewFile *.jsont :setlocal syntax=html
 autocmd BufEnter,BufRead,BufNewFile *.less.hbs :setlocal syntax=less.handlebars
