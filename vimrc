@@ -19,7 +19,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'neoclide/coc.nvim', {'branch': 'release'} " language server integration
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'ap/vim-buftabline' " show open buffers in tabline
-  Plug 'mtth/scratch.vim'
   Plug 'tommcdo/vim-fubitive' " vim-fugitive support for bitbucket links
   Plug 'tpope/vim-rhubarb' " vim-fugitive support for github links
 
