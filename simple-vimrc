@@ -27,16 +27,17 @@ set mouse=a " allow scrolling with mousewheel
 
 set undofile " save undo history, instead of losing it every time vim closes
 
+" !!! This isnt working, ~ is not expanded
 " Set permanent directories for vim's temporary files 
-if !isdirectory("~/.vim/swapfiles")
-    call mkdir("~/.vim/swapfiles", "p")
-endif
-if !isdirectory("~/.vim/backupfiles")
-    call mkdir("~/.vim/backupfiles", "p")
-endif
-if !isdirectory("~/.vim/undodir")
-    call mkdir("~/.vim/undodir", "p")
-endif
+" if !isdirectory("~/.vim/swapfiles")
+"     call mkdir("~/.vim/swapfiles", "p")
+" endif
+" if !isdirectory("~/.vim/backupfiles")
+"     call mkdir("~/.vim/backupfiles", "p")
+" endif
+" if !isdirectory("~/.vim/undodir")
+"     call mkdir("~/.vim/undodir", "p")
+" endif
 set directory=~/.vim/swapfiles//
 set backupdir=~/.vim/backupfiles//
 set undodir=~/.vim/undodir
