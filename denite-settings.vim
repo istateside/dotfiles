@@ -1,10 +1,7 @@
-" Denite setup Pulled from https://github.com/ctaylo21/jarvis/blob/master/config/nvim/init.vim#L58
-call denite#custom#var('file/rec', 'command', ['rg', '--hidden', '--files', '--glob', '!.git'])
-call denite#custom#source('file/rec', 'sorters', ['sorter/sublime'])
-call denite#custom#alias('source', 'file/rec/build', 'file/rec')
-call denite#custom#var('file/rec/build', 'command', ['rg', '--hidden', '--files', '--no-ignore-vcs', '--glob', '!.git', ':directory', 'build/'])
+call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
 
 call denite#custom#var('grep', 'command', ['rg'])
+
 " Recommended defaults for ripgrep via Denite docs
 call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])"
 call denite#custom#var('grep', 'recursive_opts', [])
@@ -12,16 +9,7 @@ call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
 
-call denite#custom#option('_', 'max_dynamic_update_candidates', 50000)
-
-" Loop through denite options and enable them
-function! s:profile(opts) abort
-  for l:fname in keys(a:opts)
-    for l:dopt in keys(a:opts[l:fname])
-      call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
-    endfor
-  endfor
-endfunction
+call denite#custom#option('_', 'max_dynamic_update_candidates', 25000)
 
 " === Denite shorcuts === "
 "   ;         - Browser currently open buffers
@@ -29,11 +17,10 @@ endfunction
 "   <leader>b     - Fuzzy find list of files in current directory, ignoring .gitignore file
 "   <leader>g     - Search current directory for occurences of word under cursor
 "   <leader>a     - Search current directory for occurences of given term and close window if no results
-nmap ; :Denite buffer<CR>
-nmap <leader>f :DeniteProjectDir file/rec<CR>
-nmap <leader>b :DeniteProjectDir file/rec/build<CR>
+" nmap ; :Denite buffer<CR>
+" nmap <leader>f :Denite file/rec<CR>
 nnoremap <leader>g :<C-u>DeniteCursorWord grep:.<CR>
-nnoremap <leader>a :<C-u>Denite grep:. -no-empty<CR>
+" nnoremap <leader>a :<C-u>Denite grep:. -no-empty<CR>
 
 " Define mappings while in 'filter' mode
 "   <C-o>         - Switch to normal mode inside of search results
@@ -78,22 +65,36 @@ function! s:denite_my_settings() abort
 endfunction
 
 let s:denite_options = {'default' : {
-\ 'start_filter': 1,
-\ 'auto_resize': 1,
-\ 'source_names': 'short',
-\ 'prompt': 'λ:',
-\ 'statusline': 0,
-\ 'highlight_matched_char': 'WildMenu',
-\ 'highlight_matched_range': 'Visual',
-\ 'highlight_window_background': 'Visual',
-\ 'highlight_filter_background': 'StatusLine',
-\ 'highlight_prompt': 'StatusLine',
-\ 'winrow': 1,
-\ 'vertical_preview': 1
-\ }}
+      \ 'split': 'floating',
+      \ 'start_filter': 1,
+      \ 'auto_resize': 1,
+      \ 'prompt': 'λ:',
+      \ 'highlight_matched_char': 'QuickFixLine',
+      \ 'highlight_matched_range': 'Visual',
+      \ 'highlight_window_background': 'Visual',
+      \ 'highlight_filter_background': 'DiffAdd',
+      \ 'winrow': 1,
+      \ 'winwidth': &columns - 10,
+      \ 'wincol': 5,
+      \ 'vertical_preview': 1
+      \ }}
+
+" Loop through denite options and enable them
+" Loop through denite options and enable them
+function! s:profile(opts) abort
+  for l:fname in keys(a:opts)
+    for l:dopt in keys(a:opts[l:fname])
+      call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
+    endfor
+  endfor
+endfunction
+
+function! s:profile(opts) abort
+  for l:fname in keys(a:opts)
+    for l:dopt in keys(a:opts[l:fname])
+      call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
+    endfor
+  endfor
+endfunction
 
 call s:profile(s:denite_options)
-
-" fruzzy settings
-let g:fruzzy#usenative = 1
-call denite#custom#source('_', 'matchers', ['matcher/fruzzy'])

@@ -18,7 +18,7 @@ set termguicolors " allow vim to use full color palette from your terminal
 set laststatus=2 " always show status bar at bottom of screen
 set scrolloff=15 " always show 15 lines above + below cursor
 
-set updatetime=100
+set updatetime=20
 
 set foldmethod=syntax
 set foldlevel=99
@@ -29,15 +29,15 @@ set undofile " save undo history, instead of losing it every time vim closes
 
 " !!! This isnt working, ~ is not expanded
 " Set permanent directories for vim's temporary files 
-" if !isdirectory("~/.vim/swapfiles")
-"     call mkdir("~/.vim/swapfiles", "p")
-" endif
-" if !isdirectory("~/.vim/backupfiles")
-"     call mkdir("~/.vim/backupfiles", "p")
-" endif
-" if !isdirectory("~/.vim/undodir")
-"     call mkdir("~/.vim/undodir", "p")
-" endif
+if !isdirectory(expand("~/.vim/swapfiles"))
+    call mkdir(expand("~/.vim/swapfiles"), "p")
+endif
+if !isdirectory(expand("~/.vim/backupfiles"))
+    call mkdir(expand("~/.vim/backupfiles"), "p")
+endif
+if !isdirectory(expand("~/.vim/undodir"))
+    call mkdir(expand("~/.vim/undodir"), "p")
+endif
 set directory=~/.vim/swapfiles//
 set backupdir=~/.vim/backupfiles//
 set undodir=~/.vim/undodir

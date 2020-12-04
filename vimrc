@@ -16,20 +16,20 @@ call plug#begin('~/.vim/plugged')
   Plug 'sheerun/vim-polyglot' " language packs
   Plug 'pangloss/vim-javascript' " better js language pack
   Plug 'mustache/vim-mustache-handlebars' " better hbs syntax highlighting
-  Plug 'neoclide/coc.nvim', {'branch': 'release'} " language server integration
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'ap/vim-buftabline' " show open buffers in tabline
-  Plug 'tommcdo/vim-fubitive' " vim-fugitive support for bitbucket links
   Plug 'tpope/vim-rhubarb' " vim-fugitive support for github links
+  Plug 'prettier/vim-prettier', {
+    \ 'do': 'yarn install',
+    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+  Plug 'junegunn/fzf.vim'
 
   if has('nvim')
     " nvim specific plugins
     Plug 'Shougo/denite.nvim'
-    Plug 'raghur/fruzzy', {'do': { -> fruzzy#install()}}
-  else
-    " vim specific plugins
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-    Plug 'junegunn/fzf.vim'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'} " language server integration
   endif
 call plug#end()
 
@@ -70,6 +70,8 @@ endfunction
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 autocmd BufEnter,BufRead,BufNewFile *.buildconfig :setlocal syntax=json
+autocmd BufEnter,BufRead,BufNewFile *.list :setlocal filetype=html
+autocmd BufEnter,BufRead,BufNewFile *.list :setlocal syntax=html
 autocmd BufEnter,BufRead,BufNewFile *.block :setlocal filetype=html
 autocmd BufEnter,BufRead,BufNewFile *.block :setlocal syntax=html
 autocmd BufEnter,BufRead,BufNewFile *.jsont :setlocal filetype=html
@@ -126,6 +128,11 @@ function! OpenClosestPackageJson()
   echo "'package.json' file could not be found"
 endfunction
 
+map <leader>o :call OpenDirInFinder()<CR>
+function! OpenDirInFinder()
+  :!open %:p:h
+endfunction
+
 " vim-bufkill bindings
 let g:BufKillCreateMappings = 0
 
@@ -144,8 +151,30 @@ nnoremap <silent> <plug>(scratch-open) :call scratch#open(0)<cr>
 nmap gs <plug>(scratch-open)
 nmap gi <plug>(scratch-insert-reuse)
 
-" bitbucket support for SQS cloud domain
-let g:fugitive_bitbucket_domains = ['code.squarespace.net']
-
 " stop unzooming the vim tmux pane when navigating past edge - for vim-tmux-navigator
 let g:tmux_navigator_disable_when_zoomed=1
+
+" set python version to 3
+set pyxversion=3
+
+" fzf.vim
+nnoremap ; :Buffers<CR>
+nnoremap <leader>f :Files<CR>
+let preview_options = {'options': '--delimiter : --nth 2..'}
+command! -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
+  \   1,
+  \   fzf#vim#with_preview(preview_options), <bang>0)
+nnoremap <leader>a :RG<CR>
+let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.8 } }
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
