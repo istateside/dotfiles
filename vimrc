@@ -65,8 +65,8 @@ vnoremap <leader>c<space> :call NERDComment("n", "Toggle")<CR>gv
 " Code folding
 set foldmethod=syntax
 
-
-autocmd BufEnter,BufRead,BufNewFile *.buildconfig :setlocal syntax=json
+autocmd BufEnter,BufRead,BufNewFile *.buildconfig :setlocal syntax=jsonc
+autocmd BufEnter,BufRead,BufNewFile *.json :setlocal syntax=jsonc
 autocmd BufEnter,BufRead,BufNewFile *.list :setlocal filetype=html
 autocmd BufEnter,BufRead,BufNewFile *.list :setlocal syntax=html
 autocmd BufEnter,BufRead,BufNewFile *.block :setlocal filetype=html
@@ -76,6 +76,7 @@ autocmd BufEnter,BufRead,BufNewFile *.jsont :setlocal syntax=html
 autocmd BufEnter,BufRead,BufNewFile *.less.hbs :setlocal syntax=less.handlebars
 autocmd BufEnter,BufRead,BufNewFile *.less.hbs :setlocal filetype=less.handlebars
 autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 
 " lightline configuration
 set noshowmode " lightline shows mode for us, so this is unneeded
@@ -149,7 +150,7 @@ endfunction
 
 map <leader>o :call OpenDirInFinder()<CR>
 function! OpenDirInFinder()
-  :!open %:p:h
+:!open %:p:h
 endfunction
 
 " vim-bufkill bindings
