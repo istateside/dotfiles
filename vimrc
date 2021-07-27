@@ -173,24 +173,29 @@ set pyxversion=3
 let g:fubitive_domain_pattern = 'code\.squarespace\.net'
 
 " fzf.vim
-let preview_options = {'options': '--delimiter : --nth 2..'}
-command! -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
-  \   1,
-  \   fzf#vim#with_preview(preview_options), <bang>0)
-
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
 nnoremap ; :Buffers<CR>
 nnoremap <leader>f :Files<CR>
-nnoremap <leader>a :RG<CR>
-let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.8 } }
 
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+" My old config
+" let preview_options = {'options': '--delimiter : --nth 2..', 'dir': systemlist('git rev-parse --show-toplevel')[0]}
+let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.8 } }
+let g:fzf_preview_window = ['right:50%', 'ctrl-]']
+
+" === FZF.vim Rg === "
+let fzf_options = {'dir': systemlist('git rev-parse --show-toplevel')[0]}
+let fzf_command = 'rg --column --line-number --no-heading --color=always --smart-case -- '
+
+command! -bang -nargs=* Rg
+\ call fzf#vim#grep(
+\ fzf_command . shellescape(<q-args>),
+\ 1,
+\ fzf#vim#with_preview(fzf_options), <bang>0)
+
+nnoremap <leader>a :Rg 
+
+command! -bang -nargs=* RgCurrentWord
+\ call fzf#vim#grep(
+\ fzf_command . shellescape(expand('<cword>')),
+\ 1,
+\ fzf#vim#with_preview(fzf_options), <bang>0)
+nnoremap <leader>g :RgCurrentWord<CR>
