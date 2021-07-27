@@ -64,18 +64,8 @@ set textwidth=100 " width for colorcolumn. Would auto-break lines if formatoptio
 
 set showtabline=2 "always show tabline
 " keybindings to navigate open buffers without needing to manually recall them
-" <Tab> to switch to next buffer, <Shift-Tab> to switch to previous buffer
 map <S-Tab> :bp<CR> 
 map <Tab> :bn<CR>
-
-" keybindings to move lines of text around.
-" Control+J to move down, Control+K to move up.
-"nnoremap <C-j> :m .+1<CR>==
-"vnoremap <C-j> :m '>+1<CR>gv=gv
-"inoremap <C-j> <Esc>:m .+1<CR>==gi
-"nnoremap <C-k> :m .-2<CR>==
-"inoremap <C-k> <Esc>:m .-2<CR>==gi
-"vnoremap <C-k> :m '<-2<CR>gv=gv
 
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
