@@ -18,7 +18,7 @@ set termguicolors " allow vim to use full color palette from your terminal
 set laststatus=2 " always show status bar at bottom of screen
 set scrolloff=15 " always show 15 lines above + below cursor
 
-set updatetime=20
+set updatetime=100
 
 set foldmethod=syntax
 set foldlevel=99
@@ -27,20 +27,20 @@ set mouse=a " allow scrolling with mousewheel
 
 set undofile " save undo history, instead of losing it every time vim closes
 
-" !!! This isnt working, ~ is not expanded
+" !!! This isnt working, /Users/kfleischman is not expanded
 " Set permanent directories for vim's temporary files 
-if !isdirectory(expand("~/.vim/swapfiles"))
-    call mkdir(expand("~/.vim/swapfiles"), "p")
+if !isdirectory(expand("/Users/kfleischman/.vim/swapfiles"))
+    call mkdir(expand("/Users/kfleischman/.vim/swapfiles"), "p")
 endif
-if !isdirectory(expand("~/.vim/backupfiles"))
-    call mkdir(expand("~/.vim/backupfiles"), "p")
+if !isdirectory(expand("/Users/kfleischman/.vim/backupfiles"))
+    call mkdir(expand("/Users/kfleischman/.vim/backupfiles"), "p")
 endif
-if !isdirectory(expand("~/.vim/undodir"))
-    call mkdir(expand("~/.vim/undodir"), "p")
+if !isdirectory(expand("/Users/kfleischman/.vim/undodir"))
+    call mkdir(expand("/Users/kfleischman/.vim/undodir"), "p")
 endif
-set directory=~/.vim/swapfiles//
-set backupdir=~/.vim/backupfiles//
-set undodir=~/.vim/undodir
+set directory=/Users/kfleischman/.vim/swapfiles
+set backupdir=/Users/kfleischman/.vim/backupfiles
+set undodir=/Users/kfleischman/.vim/undodir
 
 " Tab spacing
 set tabstop=2 " how many spaces to render for a <Tab> character
@@ -63,6 +63,10 @@ set colorcolumn=+1 " highlight column set by textwidth to mark long lines
 set textwidth=100 " width for colorcolumn. Would auto-break lines if formatoptions included "t"
 
 set showtabline=2 "always show tabline
+
+set cursorline
+" highlight CursorLine term=bold cterm=bold guibg=#5e5c5b
+
 " keybindings to navigate open buffers without needing to manually recall them
 map <S-Tab> :bp<CR> 
 map <Tab> :bn<CR>

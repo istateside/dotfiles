@@ -1,4 +1,7 @@
 alias nv="nvim"
+alias gi="git"
+alias gitt="git"
+alias gittt="git"
 alias vimrc="nvim ~/dotfiles/vimrc"
 alias bashrc="nvim ~/dotfiles/bashrc"
 alias zshrc="nvim ~/.zshrc"
@@ -73,4 +76,11 @@ loadScripts() {
 
   echo "Built files restored from cache."
 }
+
+sha() {
+  shaHash=`git rev-parse HEAD`
+  echo $shaHash | tr -d "\n" | pbcopy
+  echo $shaHash
+}
+
 PATH=$PATH:/Users/kfleischman/projects/kubectl-plugins

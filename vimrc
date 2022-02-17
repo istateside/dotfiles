@@ -6,7 +6,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-  Plug 'airblade/vim-gitgutter' " git integration in left column
   Plug 'ap/vim-buftabline' " show open buffers in tabline
   Plug 'itchyny/lightline.vim' " more helpful status line
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -20,16 +19,15 @@ call plug#begin('~/.vim/plugged')
   Plug 'flazz/vim-colorschemes' " color schemes
   Plug 'HerringtonDarkholme/yats.vim'
   Plug 'kevinoid/vim-jsonc'
-  Plug 'maxmellon/vim-jsx-pretty'
   Plug 'mtdl9/vim-log-highlighting'
-  Plug 'mustache/vim-mustache-handlebars' " better hbs syntax highlighting
-  Plug 'pangloss/vim-javascript' " better js language pack
   Plug 'sheerun/vim-polyglot' " language packs
+  Plug 'pangloss/vim-javascript' " better js language pack
+  Plug 'maxmellon/vim-jsx-pretty'
 
   Plug 'tommcdo/vim-fubitive' "fugitive support for bitbucket
   Plug 'tpope/vim-fugitive' " git integration commands
   Plug 'tpope/vim-rhubarb' " vim-fugitive support for github links
-
+  Plug 'thezeroalpha/vim-relatively-complete'
 
   if has('nvim')
     " nvim specific plugins
@@ -37,24 +35,28 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     " Plug 'nvim-telescope/telescope.nvim'
-
+    Plug 'lewis6991/gitsigns.nvim'
     Plug 'neovim/nvim-lspconfig'
-    Plug 'kabouzeid/nvim-lspinstall'
+    
+    Plug 'williamboman/nvim-lsp-installer'
+    "Plug 'kabouzeid/nvim-lspinstall'
 
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
     Plug 'kyazdani42/nvim-tree.lua'
 
-    Plug 'mattn/efm-langserver'
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+    Plug 'jose-elias-alvarez/null-ls.nvim',
+    Plug 'folke/lsp-colors.nvim'
   else
     " File trees
     Plug 'scrooloose/nerdtree' " file explorer
   endif
 call plug#end()
 
-source ~/dotfiles/simple-vimrc
-
 " Plugin settings
 colorscheme gruvbox " colorscheme, installed from the vim-colorschemes plugin
+
+source ~/dotfiles/simple-vimrc
 
 " nerdcommenter mappings
 let g:NERDDefaultAlign = 'left'
@@ -64,6 +66,11 @@ vnoremap <leader>c<space> :call NERDComment("n", "Toggle")<CR>gv
 
 " Code folding
 set foldmethod=syntax
+
+set nocp
+if version >= 600
+  filetype plugin indent on
+endif
 
 autocmd BufEnter,BufRead,BufNewFile *.buildconfig :setlocal syntax=jsonc
 autocmd BufEnter,BufRead,BufNewFile *.json :setlocal syntax=jsonc
@@ -75,8 +82,11 @@ autocmd BufEnter,BufRead,BufNewFile *.jsont :setlocal filetype=html
 autocmd BufEnter,BufRead,BufNewFile *.jsont :setlocal syntax=html
 autocmd BufEnter,BufRead,BufNewFile *.less.hbs :setlocal syntax=less.handlebars
 autocmd BufEnter,BufRead,BufNewFile *.less.hbs :setlocal filetype=less.handlebars
+autocmd BufEnter,BufRead,BufNewFile package-lock.json :setlocal syntax=off
+autocmd BufEnter,BufRead,BufNewFile npm-shrinkwrap.json :setlocal syntax=off
+autocmd BufEnter,BufRead,BufNewFile yarn.lock :setlocal syntax=off
 autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+autocmd BufNewFile,BufRead *.tsx set filetype=typescriptreact
 
 " lightline configuration
 set noshowmode " lightline shows mode for us, so this is unneeded
@@ -121,8 +131,11 @@ EOF
 
 lua << EOF
 EOF
+  lua require('setup')
   lua require('lsp')
   lua require('nvim-tree-config')
+  lua require('gitsigns-config')
+  lua require('null-ls-config')
 else 
   """"""""""""
   " NERDTREE SETTINGS
@@ -140,8 +153,7 @@ function! OpenClosestPackageJson()
   let package_file = findfile('package.json', '.;.git;')
 
   if len(package_file)
-    execute 'pedit' package_file
-    :wincmd P
+    execute 'edit' package_file
     return
   end
 
@@ -184,6 +196,7 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-]']
 " === FZF.vim Rg === "
 let fzf_options = {'dir': systemlist('git rev-parse --show-toplevel')[0]}
 let fzf_command = 'rg --column --line-number --no-heading --color=always --smart-case -- '
+let $FZF_PREVIEW_COMMAND="COLORTERM=truecolor bat --style=numbers --color=always {}"
 
 command! -bang -nargs=* Rg
 \ call fzf#vim#grep(
@@ -199,3 +212,9 @@ command! -bang -nargs=* RgCurrentWord
 \ 1,
 \ fzf#vim#with_preview(fzf_options), <bang>0)
 nnoremap <leader>g :RgCurrentWord<CR>
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path("rg --files <Bar> xargs realpath --relative-to " . expand("%:h"))
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 0 }})
+
+
+
+imap <C-x><C-r> <Plug>RelativelyCompleteFile
